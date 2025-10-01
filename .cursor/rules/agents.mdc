@@ -1,6 +1,11 @@
 ---
-alwaysApply: false
+alwaysApply: true
 ---
+## Instructions
+
+- Always use `uv` to run any python commands
+
+
 ## Dependencies
 - **Runtime**
   - [`typer`](https://typer.tiangolo.com/) → CLI framework  
@@ -21,11 +26,9 @@ src/
     auth.py        # Authentication management
     client.py      # Base API client
     flows.py       # Flows endpoints
-    executions.py  # Executions endpoints
   cli/
     __init__.py
     flows.py       # CLI routes for flows
-    executions.py  # CLI routes for executions
   cli.py           # Entrypoint: builds Typer app and registers routes
 ```
 
@@ -58,13 +61,6 @@ src/
   - Calls: `GET /api/v1/{tenant}/flows/{namespace}`  
   - Returns list of flows in table or JSON.
 
-#### Executions
-- `kestra executions list`  
-  - Calls: `GET /api/v1/{tenant}/executions`  
-  - Returns recent executions (filters optional).
-- `kestra executions create --namespace <namespace> --id <flow_id>`  
-  - Calls: `POST /api/v1/{tenant}/executions/{namespace}/{id}`  
-  - Starts a new execution for a flow.
 
 ---
 
@@ -103,7 +99,6 @@ src/
 - Authentication system with `~/.kestra/config`.
 - Context support (host, tenant, auth).
 - Flows: list command.
-- Executions: list & create commands.
 - JSON & table output.
 
 ### Next Iteration

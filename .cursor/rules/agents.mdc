@@ -1,0 +1,125 @@
+---
+alwaysApply: false
+---
+## Dependencies
+- **Runtime**
+  - [`typer`](https://typer.tiangolo.com/) → CLI framework  
+  - [`httpx`](https://www.python-httpx.org/) → HTTP client
+- **Testing**
+  - [`pytest`](https://docs.pytest.org/) → testing framework  
+  - `unittest.mock.patch` → mocking HTTP and filesystem calls
+
+---
+
+## Project Structure
+All sources under `src/`:
+
+```
+src/
+  api_client/
+    __init__.py
+    auth.py        # Authentication management
+    client.py      # Base API client
+    flows.py       # Flows endpoints
+    executions.py  # Executions endpoints
+  cli/
+    __init__.py
+    flows.py       # CLI routes for flows
+    executions.py  # CLI routes for executions
+  cli.py           # Entrypoint: builds Typer app and registers routes
+```
+
+- `src/api_client`: Responsible for API logic, authentication, and endpoint wrappers.
+- `src/cli`: Each module maps to a set of CLI commands, delegating to the API client.
+- `src/cli.py`: Root entrypoint exposing `typer.Typer()` as `app`.
+
+---
+
+## Product Requirements
+
+### Authentication
+- Users can authenticate using:
+  - **Username + password** (interactive login flow).
+  - **Service account API token**.
+- Auth credentials should be persisted in a `~/.kestra/config` file:
+  - Supports multiple named contexts (similar to `kubectl`).
+  - Context defines:
+    - Host URL
+    - Tenant
+    - Authentication method (token or username/password).
+- Default context should be configurable so users don’t have to specify tenant/host every time.
+
+---
+
+### CLI Commands (MVP)
+
+#### Flows
+- `kestra flows list --namespace <namespace>`  
+  - Calls: `GET /api/v1/{tenant}/flows/{namespace}`  
+  - Returns list of flows in table or JSON.
+
+#### Executions
+- `kestra executions list`  
+  - Calls: `GET /api/v1/{tenant}/executions`  
+  - Returns recent executions (filters optional).
+- `kestra executions create --namespace <namespace> --id <flow_id>`  
+  - Calls: `POST /api/v1/{tenant}/executions/{namespace}/{id}`  
+  - Starts a new execution for a flow.
+
+---
+
+### Parameters
+- **Tenant**:
+  - Optional CLI flag (`--tenant <tenant>`).
+  - Can be set in configuration file.
+- **Host**:
+  - Optional CLI flag (`--host <url>`).
+  - Can be set in configuration file.
+- **Authentication**:
+  - Token or username/password can be provided via flags (`--token`, `--username`, `--password`).
+  - Stored securely in `~/.kestra/config`.
+
+---
+
+### Output
+- Support for multiple output formats:
+  - Human-readable table (default).
+  - JSON (`--output json`) for scripting.
+
+---
+
+## Future Iterations
+- Dynamic shell completions.
+- Other endpoints (namespaces, plugins, logs).
+- Pagination and filters for executions.
+- Interactive login command (`kestra login`).
+- Context management (`kestra config use-context <name>`).
+
+---
+
+## Milestones
+
+### MVP
+- Authentication system with `~/.kestra/config`.
+- Context support (host, tenant, auth).
+- Flows: list command.
+- Executions: list & create commands.
+- JSON & table output.
+
+### Next Iteration
+- Pagination & filtering support.
+- Interactive login workflow.
+- Autocompletion setup (bash, zsh, fish).
+- Config commands for managing multiple contexts.
+
+### Future
+- Support for more endpoints (namespaces, plugins, logs).
+- Integration with scripting tools (pipe to jq, ndjson).
+- Advanced error handling & retry strategies.
+- Telemetry (opt-in).
+
+---
+
+## Resources
+- [Kestra API Reference](https://kestra.io/docs/api-reference/open-source)
+- Use `source .venv/bin/activate` to be able to access `uv` command if needed

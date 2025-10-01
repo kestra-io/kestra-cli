@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-kestra = "main:app"
+kestra = "src.main_cli:app"
 
 [build-system]
 requires = ["hatchling"]

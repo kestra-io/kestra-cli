@@ -3,7 +3,7 @@
 import typer
 from rich.console import Console
 
-from cli.flows import app as flows_app
+from src.cli.flows import app as flows_app
 
 console = Console()
 
@@ -29,7 +29,7 @@ config_app = typer.Typer(help="Manage configuration and authentication")
 @config_app.command()
 def show():
     """Show current configuration."""
-    from api_client.auth import AuthManager
+    from src.api_client.auth import AuthManager
     
     auth_manager = AuthManager()
     
@@ -59,7 +59,7 @@ def add(
     set_default: bool = typer.Option(False, "--default", help="Set as default context")
 ):
     """Add a new authentication context."""
-    from api_client.auth import AuthManager, AuthContext
+    from src.api_client.auth import AuthManager, AuthContext
     
     auth_manager = AuthManager()
     
@@ -90,7 +90,7 @@ def remove(
     name: str = typer.Argument(..., help="Context name to remove")
 ):
     """Remove an authentication context."""
-    from api_client.auth import AuthManager
+    from src.api_client.auth import AuthManager
     
     auth_manager = AuthManager()
     
@@ -106,7 +106,7 @@ def use(
     name: str = typer.Argument(..., help="Context name to use as default")
 ):
     """Set a context as the default."""
-    from api_client.auth import AuthManager
+    from src.api_client.auth import AuthManager
     
     auth_manager = AuthManager()
     

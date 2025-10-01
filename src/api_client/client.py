@@ -2,7 +2,7 @@
 
 import httpx
 from typing import Dict, Any, Optional
-from .auth import AuthManager, AuthContext
+from src.api_client.auth import AuthManager, AuthContext
 
 
 class KestraAPIClient:

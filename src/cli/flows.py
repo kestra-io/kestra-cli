@@ -7,9 +7,9 @@ from rich.table import Table
 from rich import print as rprint
 import json
 
-from api_client.client import KestraAPIClient
-from api_client.flows import FlowsAPI
-from api_client.auth import AuthContext
+from src.api_client.client import KestraAPIClient
+from src.api_client.flows import FlowsAPI
+from src.api_client.auth import AuthContext
 
 
 console = Console()
@@ -32,7 +32,7 @@ def list(
         # Create temporary context if credentials provided via CLI
         context = None
         if host or token:
-            from api_client.auth import AuthContext
+            from src.api_client.auth import AuthContext
             context = AuthContext(
                 name="temp",
                 host=host or "http://localhost:8080",
@@ -87,7 +87,7 @@ def get(
         # Create temporary context if credentials provided via CLI
         context = None
         if host or token:
-            from api_client.auth import AuthContext
+            from src.api_client.auth import AuthContext
             context = AuthContext(
                 name="temp",
                 host=host or "http://localhost:8080",

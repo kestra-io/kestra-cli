@@ -1,8 +1,8 @@
 """Flows API endpoints for Kestra."""
 
 from typing import List, Dict, Any, Optional
-from .client import KestraAPIClient
-from .auth import AuthContext
+from src.api_client.client import KestraAPIClient
+from src.api_client.auth import AuthContext
 
 
 class FlowsAPI:

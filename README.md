@@ -19,7 +19,7 @@ uv pip install -e .
 
 3. Setup authentication (optional - you can also use CLI flags):
 ```bash
-uv run python main.py config add default http://localhost:8080 main --token YOUR_TOKEN --default
+uv run kestra config add default http://localhost:8080 main --token YOUR_TOKEN --default
 ```
 
 ## Usage
@@ -29,10 +29,10 @@ uv run python main.py config add default http://localhost:8080 main --token YOUR
 #### Flows
 ```bash
 # List flows in a namespace
-uv run python main.py flows list <namespace>
+uv run kestra flows list <namespace>
 
 # Get a specific flow
-uv run python main.py flows get <namespace> <flow_id>
+uv run kestra flows get <namespace> <flow_id>
 ```
 
 ### Authentication
@@ -41,12 +41,12 @@ You can authenticate in several ways:
 
 1. **Using CLI flags** (recommended for testing):
 ```bash
-uv run python main.py flows list <namespace> --host http://localhost:8080 --token YOUR_TOKEN
+uv run kestra flows list <namespace> --host http://localhost:8080 --token YOUR_TOKEN
 ```
 
-2. **Using configuration file** (after running `uv run python main.py config add`):
+2. **Using configuration file** (after running `uv run kestra config add`):
 ```bash
-uv run python main.py flows list <namespace>
+uv run kestra flows list <namespace>
 ```
 
 ### Output Formats
@@ -58,20 +58,20 @@ All commands support two output formats:
 
 Use the `--output json` flag to get JSON output:
 ```bash
-uv run python main.py flows list <namespace> --output json
+uv run kestra flows list <namespace> --output json
 ```
 
 ### Examples
 
 ```bash
 # List flows in the 'company.team' namespace
-uv run python main.py flows list company.team --host http://localhost:8080 --token YOUR_TOKEN
+uv run kestra flows list company.team --host http://localhost:8080 --token YOUR_TOKEN
 
 # Get a specific flow in JSON format
-uv run python main.py flows get company.team concurrency_limits_demo --host http://localhost:8080 --token YOUR_TOKEN --output json
+uv run kestra flows get company.team concurrency_limits_demo --host http://localhost:8080 --token YOUR_TOKEN --output json
 
 # Show version information
-uv run python main.py version
+uv run kestra version
 ```
 
 ## Configuration
@@ -82,32 +82,32 @@ The CLI stores authentication information in `~/.kestra/config`. You can manage 
 
 ```bash
 # Show current configuration
-uv run python main.py config show
+uv run kestra config show
 
 # Add a new authentication context
-uv run python main.py config add <name> <host> <tenant> --token <token> [--default]
+uv run kestra config add <name> <host> <tenant> --token <token> [--default]
 
 # Remove a context
-uv run python main.py config remove <name>
+uv run kestra config remove <name>
 
 # Set a context as default
-uv run python main.py config use <name>
+uv run kestra config use <name>
 ```
 
 ### Examples
 
 ```bash
 # Add a context and set it as default
-uv run python main.py config add default http://localhost:8080 main --token YOUR_TOKEN --default
+uv run kestra config add default http://localhost:8080 main --token YOUR_TOKEN --default
 
 # Add another context
-uv run python main.py config add production https://kestra.company.com main --token PROD_TOKEN
+uv run kestra config add production https://kestra.company.com main --token PROD_TOKEN
 
 # Switch to production context
-uv run python main.py config use production
+uv run kestra config use production
 
 # Show all contexts
-uv run python main.py config show
+uv run kestra config show
 ```
 
 ## Development
@@ -133,7 +133,7 @@ uv pip install -e .
 
 3. Run the CLI:
 ```bash
-uv run python main.py --help
+uv run kestra --help
 ```
 
 ## Requirements

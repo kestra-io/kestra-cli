@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.table import Table
 from rich import print as rprint
 import json
+from pathlib import Path
 
 from src.api_client.client import KestraAPIClient
 from src.api_client.flows import FlowsAPI
@@ -115,6 +116,68 @@ def get(
             
             console.print(table)
     
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def create(
+    filepath: str = typer.Argument(..., help="Path to the YAML flow file"),
+    tenant: Optional[str] = typer.Option(None, "--tenant", "-t", help="Tenant name"),
+    host: Optional[str] = typer.Option(None, "--host", help="Kestra host URL"),
+    token: Optional[str] = typer.Option(None, "--token", help="API token"),
+    override: bool = typer.Option(False, "--override", help="Override the flow if it already exists"),
+    output: str = typer.Option("table", "--output", "-o", help="Output format (table or json)")
+):
+    """Create a flow from a YAML file."""
+    try:
+        # Check if file exists
+        file_path = Path(filepath)
+        if not file_path.exists():
+            console.print(f"[red]Error: File '{filepath}' not found[/red]")
+            raise typer.Exit(1)
+        
+        # Read YAML file
+        try:
+            yaml_content = file_path.read_text()
+        except Exception as e:
+            console.print(f"[red]Error reading file: {e}[/red]")
+            raise typer.Exit(1)
+        
+        # Initialize API client
+        client = KestraAPIClient()
+        
+        # Create temporary context if credentials provided via CLI
+        context = None
+        if host or token:
+            from src.api_client.auth import AuthContext
+            context = AuthContext(
+                name="temp",
+                host=host or "http://localhost:8080",
+                tenant=tenant or "main",
+                auth_method="token",
+                token=token
+            )
+        
+        # Create flow
+        flows_api = FlowsAPI(client)
+        flow = flows_api.create_flow(yaml_content, tenant, context, override)
+        
+        if output == "json":
+            rprint(json.dumps(flow, indent=2))
+        else:
+            # Display success message with flow details
+            action = "updated" if override else "created"
+            console.print(f"[green]✓ Flow {action} successfully![/green]")
+            console.print(f"[cyan]Flow ID:[/cyan] {flow.get('id', 'N/A')}")
+            console.print(f"[cyan]Namespace:[/cyan] {flow.get('namespace', 'N/A')}")
+            console.print(f"[cyan]Revision:[/cyan] {flow.get('revision', 'N/A')}")
+    
+    except ValueError as e:
+        # Handle validation errors (like flow already exists)
+        console.print(f"[yellow]Warning: {e}[/yellow]")
+        raise typer.Exit(1)
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
         raise typer.Exit(1)

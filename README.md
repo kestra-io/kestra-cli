@@ -33,6 +33,12 @@ uv run kestra flows list <namespace>
 
 # Get a specific flow
 uv run kestra flows get <namespace> <flow_id>
+
+# Deploy a flow from a YAML file (creates new or updates existing)
+uv run kestra flows deploy <path/to/flow.yaml>
+
+# Deploy a flow with override (skip existence check)
+uv run kestra flows deploy <path/to/flow.yaml> --override
 ```
 
 #### Namespaces
@@ -90,6 +96,12 @@ uv run kestra flows list company.team --host http://localhost:8080 --token YOUR_
 
 # Get a specific flow in JSON format
 uv run kestra flows get company.team concurrency_limits_demo --host http://localhost:8080 --token YOUR_TOKEN --output json
+
+# Deploy a flow from a YAML file
+uv run kestra flows deploy examples/my-flow.yaml --host http://localhost:8080 --token YOUR_TOKEN
+
+# Deploy a flow with override
+uv run kestra flows deploy examples/my-flow.yaml --host http://localhost:8080 --token YOUR_TOKEN --override
 
 # Show version information
 uv run kestra version

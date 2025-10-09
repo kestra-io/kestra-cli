@@ -122,7 +122,7 @@ def get(
 
 
 @app.command()
-def create(
+def deploy(
     filepath: str = typer.Argument(..., help="Path to the YAML flow file"),
     tenant: Optional[str] = typer.Option(None, "--tenant", "-t", help="Tenant name"),
     host: Optional[str] = typer.Option(None, "--host", help="Kestra host URL"),
@@ -130,7 +130,7 @@ def create(
     override: bool = typer.Option(False, "--override", help="Override the flow if it already exists"),
     output: str = typer.Option("table", "--output", "-o", help="Output format (table or json)")
 ):
-    """Create a flow from a YAML file."""
+    """Deploy a flow from a YAML file (creates or updates)."""
     try:
         # Check if file exists
         file_path = Path(filepath)
@@ -168,8 +168,7 @@ def create(
             rprint(json.dumps(flow, indent=2))
         else:
             # Display success message with flow details
-            action = "updated" if override else "created"
-            console.print(f"[green]✓ Flow {action} successfully![/green]")
+            console.print(f"[green]✓ Flow deployed successfully![/green]")
             console.print(f"[cyan]Flow ID:[/cyan] {flow.get('id', 'N/A')}")
             console.print(f"[cyan]Namespace:[/cyan] {flow.get('namespace', 'N/A')}")
             console.print(f"[cyan]Revision:[/cyan] {flow.get('revision', 'N/A')}")

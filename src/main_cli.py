@@ -4,18 +4,20 @@ import typer
 from rich.console import Console
 
 from src.cli.flows import app as flows_app
+from src.cli.namespaces import app as namespaces_app
 
 console = Console()
 
 # Create the main Typer app
 app = typer.Typer(
     name="kestra",
-    help="Kestra CLI - Manage flows",
+    help="Kestra CLI - Manage flows and namespaces",
     no_args_is_help=True
 )
 
 # Add subcommands
 app.add_typer(flows_app, name="flows", help="Manage flows")
+app.add_typer(namespaces_app, name="namespaces", help="Manage namespaces")
 
 # Add a version command
 @app.command()

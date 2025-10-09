@@ -35,6 +35,18 @@ uv run kestra flows list <namespace>
 uv run kestra flows get <namespace> <flow_id>
 ```
 
+#### Namespaces
+```bash
+# List all namespaces (uses tenant from default context)
+uv run kestra namespaces list
+
+# List all namespaces with specific tenant
+uv run kestra namespaces list --tenant main
+
+# Search for specific namespaces
+uv run kestra namespaces list --query "myproject"
+```
+
 ### Authentication
 
 You can authenticate in several ways:
@@ -64,6 +76,15 @@ uv run kestra flows list <namespace> --output json
 ### Examples
 
 ```bash
+# List all namespaces for the 'main' tenant
+uv run kestra namespaces list --host http://localhost:8080 --token YOUR_TOKEN --tenant main
+
+# List all namespaces in JSON format
+uv run kestra namespaces list --host http://localhost:8080 --token YOUR_TOKEN --tenant main --output json
+
+# Search for namespaces matching a query
+uv run kestra namespaces list --query "company" --host http://localhost:8080 --token YOUR_TOKEN --tenant main
+
 # List flows in the 'company.team' namespace
 uv run kestra flows list company.team --host http://localhost:8080 --token YOUR_TOKEN
 

@@ -32,7 +32,7 @@ class KestraAPIClient:
                 raise ValueError("No authentication context found. Please configure authentication.")
         
         if self._client is None:
-            headers = {"Content-Type": "application/json"}
+            headers = {}
             auth = None
             
             # Add authentication header
